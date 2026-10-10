@@ -1,0 +1,12 @@
+target/
+.idea/
+.allure/
+allure-results/
+log/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+performance-report.csv
+tools/settings-F-drive.xml

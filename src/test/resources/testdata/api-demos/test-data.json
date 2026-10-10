@@ -1,0 +1,10 @@
+{
+  "application": {
+    "package": "io.appium.android.apis",
+    "activity": "io.appium.android.apis.ApiDemos"
+  },
+  "menus": {
+    "accessibility": "Accessibility",
+    "accessibilityNodeProvider": "Accessibility Node Provider"
+  }
+}

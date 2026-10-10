@@ -1,0 +1,78 @@
+# =========================================================
+# BrowserStack Credentials
+# =========================================================
+
+userName: BROWSERSTACK_USERNAME
+accessKey: BROWSERSTACK_ACCESS_KEY
+
+
+# =========================================================
+# Test Configuration
+# =========================================================
+
+projectName: Android Appium Framework
+buildName: Android Appium Framework - Local Run
+sessionName: Android Appium Cucumber Test
+
+framework: cucumber
+
+
+# =========================================================
+# Application Under Test
+# =========================================================
+
+# We will configure the Android APK here in the next step.
+# Example:
+# app: ./app/MyApplication.apk
+
+app: ./apps/android/ApiDemos-debug.apk
+
+
+# =========================================================
+# Android Platforms
+# =========================================================
+
+platforms:
+  - platformName: android
+    platformVersion: "15.0"
+    deviceName: Samsung Galaxy S25
+
+
+# =========================================================
+# Parallel Execution
+# =========================================================
+
+parallelsPerPlatform: 1
+
+
+# =========================================================
+# BrowserStack Local
+# =========================================================
+
+browserstackLocal: false
+
+
+# =========================================================
+# Debugging / Reporting
+# =========================================================
+
+debug: true
+video: true
+networkLogs: false
+logLevel: info
+
+
+# =========================================================
+# Appium
+# =========================================================
+
+automationName: UiAutomator2
+appiumVersion: 2.18.0
+
+
+# =========================================================
+# Android Settings
+# =========================================================
+
+autoGrantPermissions: false
+autoAcceptAlerts: true

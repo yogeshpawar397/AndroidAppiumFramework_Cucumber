@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "books"
+  ],
+  "properties": {
+    "books": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "isbn",
+          "title",
+          "subTitle",
+          "author",
+          "publisher",
+          "description",
+          "website",
+          "publish_date",
+          "pages"
+        ],
+        "properties": {
+          "isbn": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "subTitle": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "publish_date": {
+            "type": "string"
+          },
+          "pages": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}
