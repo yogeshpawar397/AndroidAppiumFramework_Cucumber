@@ -5,6 +5,9 @@ public class PageObjectManager {
     private DevicePage devicePage;
     private ApiDemosPage apiDemosPage;
     private FormPage formPage;
+    private ProductCatalogue productCatalogue;
+    private CartPage cartPage;
+    private WebBrowserPage webBrowserPage;
 
     public DevicePage getDevicePage() {
 
@@ -31,5 +34,32 @@ public class PageObjectManager {
         }
 
         return formPage;
+    }
+
+    public ProductCatalogue getProductCatalogue() {
+
+        if (productCatalogue == null) {
+            productCatalogue = new ProductCatalogue();
+        }
+
+        return productCatalogue;
+    }
+
+    public CartPage getCartPage() {
+
+        if (cartPage == null) {
+            cartPage = new CartPage();
+        }
+
+        return cartPage;
+    }
+
+    public WebBrowserPage getWebBrowserPage() {
+
+        if (webBrowserPage == null) {
+            webBrowserPage = new WebBrowserPage();
+        }
+
+        return webBrowserPage;
     }
 }

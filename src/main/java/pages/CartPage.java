@@ -1,26 +1,35 @@
 package pages;
 
+import config.ConfigReader;
 import exceptions.FrameworkException;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
+import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import utils.LogUtils;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartPage extends BasePage {
 
+    private static final By PRODUCT_NAME_LOCATOR =
+            By.id("com.androidsample.generalstore:id/productName");
+
+    private static final By PRODUCT_PRICE_LOCATOR =
+            By.id("com.androidsample.generalstore:id/productPrice");
+
     private static final Logger LOGGER =
             LogUtils.getLogger(CartPage.class);
-
-    @AndroidFindBy(id = "com.androidsample.generalstore:id/productPrice")
-    private List<WebElement> productList;
 
     @AndroidFindBy(id = "com.androidsample.generalstore:id/totalAmountLbl")
     private WebElement totalAmount;
@@ -48,13 +57,62 @@ public class CartPage extends BasePage {
 
         LOGGER.info("Retrieving product prices from cart");
 
-        List<String> productPrices = new ArrayList<>();
+        WebDriverWait wait = new WebDriverWait(
+                getDriver(),
+                Duration.ofSeconds(ConfigReader.getInt("explicitWait"))
+        );
+        wait.ignoring(StaleElementReferenceException.class);
 
-        for (WebElement product : productList) {
-            productPrices.add(product.getText());
+        try {
+            return wait.until(driver -> {
+                List<WebElement> currentPrices =
+                        driver.findElements(PRODUCT_PRICE_LOCATOR);
+
+                if (currentPrices.isEmpty()) {
+                    return null;
+                }
+
+                List<String> prices = new ArrayList<>();
+                for (WebElement price : currentPrices) {
+                    prices.add(price.getText());
+                }
+
+                return prices;
+            });
+        } catch (TimeoutException e) {
+            throw new FrameworkException(
+                    "No product prices became available in the cart.",
+                    e
+            );
+        }
+    }
+
+    public boolean containsProduct(String productName) {
+
+        if (productName == null || productName.isBlank()) {
+            throw new FrameworkException(
+                    "Product name must not be null or blank."
+            );
         }
 
-        return productPrices;
+        LOGGER.info("Checking whether cart contains product '{}'", productName);
+
+        WebDriverWait wait = new WebDriverWait(
+                getDriver(),
+                Duration.ofSeconds(ConfigReader.getInt("explicitWait"))
+        );
+        wait.ignoring(StaleElementReferenceException.class);
+
+        try {
+            return wait.until(driver -> driver
+                    .findElements(PRODUCT_NAME_LOCATOR)
+                    .stream()
+                    .map(product -> product.getText().trim())
+                    .anyMatch(name -> name.equalsIgnoreCase(productName)));
+        } catch (TimeoutException e) {
+            LOGGER.info("Product '{}' was not found in the cart", productName);
+            return false;
+        }
     }
 
     public double getProductsSum() {
@@ -96,6 +154,11 @@ public class CartPage extends BasePage {
 
         checkBox.click();
         proceed.click();
+    }
+
+    public void completeOrder() {
+//        acceptTermsConditions();
+        submitOrder();
     }
 
     private double getFormattedAmount(String amountString) {

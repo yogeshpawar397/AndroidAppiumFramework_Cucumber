@@ -1,5 +1,6 @@
 package pages;
 
+import config.ConfigReader;
 import exceptions.FrameworkException;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -11,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import utils.LogUtils;
+import utils.WaitUtils;
 
 import java.time.Duration;
 
@@ -19,11 +21,8 @@ public class FormPage extends BasePage {
     private static final Logger LOGGER =
             LogUtils.getLogger(FormPage.class);
 
-    private static final String APP_PACKAGE =
-            "com.androidsample.generalstore";
-
-    private static final String MAIN_ACTIVITY =
-            "com.androidsample.generalstore.MainActivity";
+    private static final By NAME_FIELD_LOCATOR =
+            By.id("com.androidsample.generalstore:id/nameField");
 
     private static final By TOAST_LOCATOR =
             By.xpath("(//android.widget.Toast)[1]");
@@ -69,12 +68,19 @@ public class FormPage extends BasePage {
 
     public void setActivity() {
 
+        String appPackage = ConfigReader.get("appPackage");
+
         LOGGER.info(
-                "Activating General Store application package: {}",
-                APP_PACKAGE
+                "Restarting General Store application package: {}",
+                appPackage
         );
 
-        getDriver().activateApp(APP_PACKAGE);
+        closeApp(appPackage);
+        launchApp(appPackage);
+        WaitUtils.waitForVisibility(
+                getDriver(),
+                NAME_FIELD_LOCATOR
+        );
     }
 
     public void setGender(String gender) {

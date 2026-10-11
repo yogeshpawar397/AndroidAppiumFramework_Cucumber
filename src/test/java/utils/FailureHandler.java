@@ -1,8 +1,11 @@
 package utils;
 
 import io.cucumber.java.Scenario;
+import io.qameta.allure.Allure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayInputStream;
 
 public final class FailureHandler {
 
@@ -37,6 +40,12 @@ public final class FailureHandler {
                     screenshot,
                     "image/png",
                     "Failure Screenshot"
+            );
+            Allure.addAttachment(
+                    "Failure Screenshot",
+                    "image/png",
+                    new ByteArrayInputStream(screenshot),
+                    ".png"
             );
 
             LOGGER.info(

@@ -42,49 +42,57 @@ public final class CapabilityManager {
         );
         options.setEnforceAppInstall(false);
 
-        String app =
-                ConfigReader.getOrDefault("app", "");
+        configureAutomaticChromeDriverDownload(options);
 
-        if (!app.isBlank()) {
+        String chromeDriverExecutable =
+                ConfigReader.getOrDefault("chromeDriverExecutable", "");
 
-            Path appPath =
-                    Paths.get(app);
+        if (!chromeDriverExecutable.isBlank()) {
+            Path chromeDriverPath = Paths.get(chromeDriverExecutable);
 
-            if (!appPath.isAbsolute()) {
-                appPath =
-                        Paths.get(
-                                System.getProperty("user.dir"),
-                                app
-                        );
-            }
-
-            appPath =
-                    appPath.toAbsolutePath().normalize();
-
-            if (!Files.exists(appPath)) {
-                throw new FrameworkException(
-                        "Application file not found: "
-                                + appPath
+            if (!chromeDriverPath.isAbsolute()) {
+                chromeDriverPath = Paths.get(
+                        System.getProperty("user.dir"),
+                        chromeDriverExecutable
                 );
             }
 
-            options.setApp(appPath.toString());
-        }
+            chromeDriverPath =
+                    chromeDriverPath.toAbsolutePath().normalize();
 
-        String appPackage =
-                ConfigReader.getOrDefault("appPackage", "");
+            if (!Files.isRegularFile(chromeDriverPath)) {
+                throw new FrameworkException(
+                        "ChromeDriver executable not found: "
+                                + chromeDriverPath
+                );
+            }
 
-        if (!appPackage.isBlank()) {
-            options.setAppPackage(appPackage);
-        }
-
-        String appActivity =
-                ConfigReader.getOrDefault("appActivity", "");
-
-        if (!appActivity.isBlank()) {
-            options.setAppActivity(appActivity);
+            options.setChromedriverExecutable(chromeDriverPath.toString());
         }
 
         return options;
+    }
+
+    private static void configureAutomaticChromeDriverDownload(
+            UiAutomator2Options options) {
+
+        String executableDirectory = ConfigReader.getOrDefault(
+                "chromeDriverExecutableDir",
+                "target/chromedrivers"
+        );
+
+        Path executableDirectoryPath = Paths.get(executableDirectory);
+
+        if (!executableDirectoryPath.isAbsolute()) {
+            executableDirectoryPath = Paths.get(
+                    System.getProperty("user.dir"),
+                    executableDirectory
+            );
+        }
+
+        options.setCapability(
+                "appium:chromedriverExecutableDir",
+                executableDirectoryPath.toAbsolutePath().normalize().toString()
+        );
     }
 }
