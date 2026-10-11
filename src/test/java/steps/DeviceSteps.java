@@ -38,29 +38,4 @@ public class DeviceSteps {
                 "Unexpected Android package"
         );
     }
-
-    @When("I open the Android Settings application")
-    public void openAndroidSettings() {
-
-        PageObjectManagerFactory
-                .get()
-                .getSettingsPage()
-                .open();
-    }
-
-    @Then("the Settings screen should be displayed")
-    public void verifySettingsScreen() {
-
-        boolean displayed =
-                PageObjectManagerFactory
-                        .get()
-                        .getSettingsPage()
-                        .isSettingsPageDisplayed();
-
-        if (!displayed) {
-            throw new AssertionError(
-                    "Settings screen is not displayed"
-            );
-        }
-    }
 }

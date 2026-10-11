@@ -12,6 +12,7 @@ import io.cucumber.testng.CucumberOptions;
                 "json:target/cucumber-reports/cucumber.json",
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
         },
+//        tags = "@form",
         publish = false
 )
 public class RunCucumberTest extends AbstractTestNGCucumberTests {

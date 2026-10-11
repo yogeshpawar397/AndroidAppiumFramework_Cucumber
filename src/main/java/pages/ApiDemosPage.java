@@ -1,6 +1,9 @@
 package pages;
 
-import io.appium.java_client.AppiumBy;
+import io.appium.java_client.pagefactory.AndroidFindBy;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,11 +12,18 @@ public class ApiDemosPage extends BasePage {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(ApiDemosPage.class);
 
-    private static final String ACCESSIBILITY =
-            "Accessibility";
+    @AndroidFindBy(accessibility = "Accessibility")
+    private WebElement accessibilityMenu;
 
-    private static final String ACCESSIBILITY_NODE_PROVIDER =
-            "Accessibility Node Provider";
+    @AndroidFindBy(accessibility = "Accessibility Node Provider")
+    private WebElement accessibilityNodeProvider;
+
+    public ApiDemosPage() {
+        PageFactory.initElements(
+                new AppiumFieldDecorator(getDriver()),
+                this
+        );
+    }
 
     public boolean isApiDemosDisplayed() {
 
@@ -21,11 +31,8 @@ public class ApiDemosPage extends BasePage {
                 "Verifying ApiDemos application is displayed"
         );
 
-        return isDisplayed(
-                AppiumBy.accessibilityId(
-                        ACCESSIBILITY
-                )
-        );
+        return accessibilityMenu != null
+                && accessibilityMenu.isDisplayed();
     }
 
     public void clickAccessibilityMenu() {
@@ -34,25 +41,17 @@ public class ApiDemosPage extends BasePage {
                 "Clicking Accessibility menu"
         );
 
-        click(
-                AppiumBy.accessibilityId(
-                        ACCESSIBILITY
-                )
-        );
+        accessibilityMenu.click();
     }
 
-    
     public boolean isAccessibilityNodeProviderDisplayed() {
 
         LOGGER.info(
                 "Verifying Accessibility Node Provider option is displayed"
         );
 
-        return isDisplayed(
-                AppiumBy.accessibilityId(
-                        ACCESSIBILITY_NODE_PROVIDER
-                )
-        );
+        return accessibilityNodeProvider != null
+                && accessibilityNodeProvider.isDisplayed();
     }
 
     public void logCurrentAppState() {
@@ -68,5 +67,4 @@ public class ApiDemosPage extends BasePage {
                 currentActivity
         );
     }
-
 }

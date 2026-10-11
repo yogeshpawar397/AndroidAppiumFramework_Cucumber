@@ -2,18 +2,9 @@ package pages;
 
 public class PageObjectManager {
 
-    private SettingsPage settingsPage;
     private DevicePage devicePage;
     private ApiDemosPage apiDemosPage;
-
-    public SettingsPage getSettingsPage() {
-
-        if (settingsPage == null) {
-            settingsPage = new SettingsPage();
-        }
-
-        return settingsPage;
-    }
+    private FormPage formPage;
 
     public DevicePage getDevicePage() {
 
@@ -31,5 +22,14 @@ public class PageObjectManager {
         }
 
         return apiDemosPage;
+    }
+
+    public FormPage getFormPage() {
+
+        if (formPage == null) {
+            formPage = new FormPage();
+        }
+
+        return formPage;
     }
 }

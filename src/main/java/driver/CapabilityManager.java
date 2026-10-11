@@ -16,8 +16,7 @@ public final class CapabilityManager {
 
     public static UiAutomator2Options getAndroidOptions() {
 
-        UiAutomator2Options options =
-                new UiAutomator2Options();
+        UiAutomator2Options options = new UiAutomator2Options();
 
         options.setPlatformName(
                 ConfigReader.get("platformName")
